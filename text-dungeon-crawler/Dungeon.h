@@ -21,6 +21,8 @@ public:
 	void handleMovementActions(Room*);
 	void printActions(int, string[]); //number of actions, string
 	int performEndGameLogic();
+	void printStats();
+	void printHealth();
 };
 
 #endif

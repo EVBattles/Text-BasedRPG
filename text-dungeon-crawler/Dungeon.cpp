@@ -1,5 +1,6 @@
 #include "Dungeon.h"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,6 +15,16 @@ void Dungeon::printActions(int numActions, string actions[])
 	for (int i = 0; i < numActions; i++) {
 		cout << actions[i] << endl;
 	}
+}
+
+void Dungeon::printStats()
+{
+	cout << "You now have " << Dungeon::player.currentHealth << " health, " << Dungeon::player.attack << " attack, and " << player.defence << " defence." << endl;
+}
+
+void Dungeon::printHealth()
+{
+	cout << "You now have " << Dungeon::player.currentHealth << " health." << endl;
 }
 
 void Dungeon::handleLootActions(Room* room)
@@ -36,7 +47,13 @@ void Dungeon::handleLootActions(Room* room)
 		}
 	}
 	cout << endl;
-	cout << "Your health is now " << player.currentHealth << " your attack is now " << player.attack << " and your defence is now " << player.defence << endl;
+	cout << "In your inventory, you now have: " << endl;
+	for (int i = 0; i < player.inventory.size(); i++)
+	{
+		cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
+	}
+	cout << endl;
+	printStats();
 }
 
 void Dungeon::handleFightActions(GameCharacter * enemy)
@@ -50,7 +67,15 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		// handle player actions
 		if (input == "a")
 		{
-			int damage = enemy->takeDamage(player.attack);
+			int chance;
+			chance = rand() % 20 + 1;
+			int damage;
+			if (chance >= 10)
+				damage = enemy->takeDamage(player.attack);
+			else if (2 <= chance)
+				damage = enemy->takeDamage(player.attack / 2);
+			else
+				cout << "You missed." << endl;
 			cout << "Your attack does " << damage << " damage." << endl;
 		}
 		else if (input == "b")
@@ -66,13 +91,23 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		{
 			cout << "You win! You have defeated the " << enemy->name << "." << endl;
 			player.increaseStats(10, 5, 5); // this is a level up, can go back and change this and print out changes
+			cout << "You have leveled up! " << endl;
+			printStats();
 			player.currentRoom->clearEnemies();
 			return;
 		}
 		// handle enemy actions
-		int damage = player.takeDamage(enemy->attack);
-		cout << enemy->name << "'s attack does " << damage << " damage." << endl;
-		cout << "Your now have " << player.currentHealth << " health." << endl;
+		int echance;
+		echance = rand() % 20 + 1;
+		int damage;
+		if (echance >= 10)
+			damage = player.takeDamage(enemy->attack);
+		else if (5 <= echance)
+			damage = enemy->takeDamage(enemy->attack / 2);
+		else
+			cout << enemy->name << " missed." << endl;
+		cout << "The " << enemy->name << " does " << damage << " damage." << endl;
+		printHealth();
 		if (player.checkIsDead())
 		{
 			return;

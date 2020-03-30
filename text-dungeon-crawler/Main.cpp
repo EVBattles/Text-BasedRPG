@@ -12,6 +12,13 @@ int main()
 	string playerName;
 	cin >> playerName;
 	Player player = Player(playerName, 100, 20, 10);
+	cout << "You have " << player.currentHealth << " health, " << player.attack - 5 << " attack, and " << player.defence << " defence." << endl;
+	cout << "In your inventory, you have: " << endl;
+	for (int i = 0; i < player.inventory.size(); i++)
+	{
+		cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
+	}
+	cout << "You now have " << player.currentHealth << " health, " << player.attack << " attack, and " << player.defence << " defence." << endl;
 
 	// SET UP FIRST ROOM
 	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>());
