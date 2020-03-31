@@ -9,5 +9,4 @@ My expected updates include
 -The ability to have enemies drop loot that can be claimed by the player [INCLUDED]
 -The ability to manage a coin purse for the player [INCLUDED]
 -The ability to include a chance mechanic for fights (computer rolls a d20 to see if an attack hits) [INCLUDED]
--The ability to fight multiple enemies in one room
 -Expand the dungeon to more than 4 rooms
