@@ -12,7 +12,8 @@ class Item
 public:
 	string name;
 	int health, attack, defence;
-	Item(string, int, int, int); //name, health, attack, defence
+	bool isLocked;
+	Item(string, int, int, int, bool); //name, health, attack, defence, isLocked
 };
 
 #endif

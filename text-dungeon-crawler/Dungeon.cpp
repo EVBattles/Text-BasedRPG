@@ -150,9 +150,66 @@ void Dungeon :: handleRoomWithChest(Room* room)
 		printActions(2, actions);
 		string input;
 		cin >> input;
+		bool key = false;
+		// check player's inventory for a key
+		int i = 0; // while loop 1 counter
+		int r = 0; // while loop 2 counter
+		while(true)
+		{
+			cout << "Checking for key" << endl;
+			if (player.inventory[i].name == "Key")
+			{
+				cout << "You have a key" << endl;
+				key = true;
+				break;
+			}
+			i++;
+			if (i > player.inventory.size())
+			{
+				cout << "You do not have a key." << endl;
+				break;
+			}
+		}
 		if (input == "a")
 		{
-			handleLootActions(room);
+			// insert check condition to see if a key is required - check if item is locked
+			for (int i = 0; i < room->items.size(); i++)
+			{
+				if (room->items[i].isLocked == false) // if the chest is not locked
+					handleLootActions(room);
+				else if (room->items[i].isLocked == true && key == true/*the player has a key*/) // if the chest is locked and the player has a key
+				{
+					// check to see if the player wants to use a key
+					cout << "This chest is locked. Would you like to use a key?" << endl;
+					string actions[]{ "a. Yes", "b. No" };
+					printActions(2, actions);
+					string input;
+					cin >> input;
+					if (input == "a")
+					{// set all items in the room to unlock
+						for (int t = 0; t < room->items.size(); t++)
+							room->items[i].isLocked = false;
+						// remove key from inventory
+						while (true)
+						{
+							if (player.inventory[r].name == "Key")
+							{
+								//append the word "-used" to key name string
+								player.inventory[r].name += " - used";
+								break;
+							}
+							r++;
+						}
+						handleLootActions(room); // loot the chest
+					}
+					else if (input == "b")
+						return;
+					else
+						cout << "Invalid choise" << endl;
+				}
+				else // if the chest is locked and the player does not have a key
+					cout << "This chest is locked. You need a key." << endl;
+			}
 			return;
 		}
 		else if (input == "b")

@@ -24,7 +24,7 @@ int main()
 	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>());
 
 	// SET UP SECOND ROOM
-	Item fork = Item("Fork", 0, 20, 0);
+	Item fork = Item("Fork", 0, 20, 0, true);
 	vector<Item> secondRoomItems;
 	secondRoomItems.push_back(fork);
 	Room secondRoom = Room(1, false, secondRoomItems, vector<GameCharacter>());

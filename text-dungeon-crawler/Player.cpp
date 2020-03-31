@@ -2,8 +2,10 @@
 
 Player::Player(string n, int h, int a, int d) : GameCharacter(n, h, a, d) //sets up new player
 {
-	Item dagger = Item("Dagger", 0, 5, 0);
+	Item dagger = Item("Dagger", 0, 5, 0, false);
 	addItem(dagger);
+	Item key = Item("Key", 0, 0, 0, false);
+	addItem(key);
 }
 
 void Player::addItem(Item item)
