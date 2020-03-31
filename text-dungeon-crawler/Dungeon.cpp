@@ -69,7 +69,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		{
 			int chance;
 			chance = rand() % 20 + 1;
-			int damage;
+			int damage = 0;
 			if (chance >= 10)
 				damage = enemy->takeDamage(player.attack);
 			else if (2 <= chance)
@@ -93,13 +93,47 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 			player.increaseStats(10, 5, 5); // this is a level up, can go back and change this and print out changes
 			cout << "You have leveled up! " << endl;
 			printStats();
+			if (enemy->loot.size() >= 0)
+			{
+				player.currentRoom->dropLoot(enemy);
+				cout << "The " << enemy->name << " has dropped some loot." << endl;
+				cout << "Would you like to pick up this loot?" << endl;
+				string actions[]{ "a. Yes", "b. No" };
+				while (true)
+				{
+					printActions(2, actions);
+					string input;
+					cin >> input;
+					if (input == "a")
+					{
+						cout << "You have found: " << endl;
+						for (int j = 0; j < player.currentRoom->items.size(); j++)
+						{
+							cout << player.currentRoom->items[j].name << " attack: " << player.currentRoom->items[j].attack << " defense: " << player.currentRoom->items[j].defence << endl;
+						}
+						player.lootRoom(player.currentRoom);
+						cout << "In your inventory, you now have: " << endl;
+						for (int i = 0; i < player.inventory.size(); i++)
+						{
+							cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
+						}
+						break;
+					}
+					else if (input == "b")
+					{
+						break;
+					}
+					else
+						cout << "Invalid choise" << endl;
+				}
+				}
 			player.currentRoom->clearEnemies();
 			return;
 		}
 		// handle enemy actions
 		int echance;
 		echance = rand() % 20 + 1;
-		int damage;
+		int damage = 0;
 		if (echance >= 10)
 			damage = player.takeDamage(enemy->attack);
 		else if (5 <= echance)
@@ -156,17 +190,14 @@ void Dungeon :: handleRoomWithChest(Room* room)
 		int r = 0; // while loop 2 counter
 		while(true)
 		{
-			cout << "Checking for key" << endl;
 			if (player.inventory[i].name == "Key")
 			{
-				cout << "You have a key" << endl;
 				key = true;
 				break;
 			}
 			i++;
 			if (i > player.inventory.size())
 			{
-				cout << "You do not have a key." << endl;
 				break;
 			}
 		}
@@ -182,38 +213,45 @@ void Dungeon :: handleRoomWithChest(Room* room)
 					// check to see if the player wants to use a key
 					cout << "This chest is locked. Would you like to use a key?" << endl;
 					string actions[]{ "a. Yes", "b. No" };
-					printActions(2, actions);
-					string input;
-					cin >> input;
-					if (input == "a")
-					{// set all items in the room to unlock
-						for (int t = 0; t < room->items.size(); t++)
-							room->items[i].isLocked = false;
-						// remove key from inventory
-						while (true)
-						{
-							if (player.inventory[r].name == "Key")
+					while (true)
+					{
+						printActions(2, actions);
+						string input;
+						cin >> input;
+						if (input == "a")
+						{// set all items in the room to unlock
+							for (int t = 0; t < room->items.size(); t++)
+								room->items[i].isLocked = false;
+							// remove key from inventory
+							while (true)
 							{
-								//append the word "-used" to key name string
-								player.inventory[r].name += " - used";
-								break;
+								if (player.inventory[r].name == "Key")
+								{
+									//append the word "-used" to key name string
+									player.inventory[r].name += " - used";
+									break;
+								}
+								r++;
 							}
-							r++;
+							handleLootActions(room); // loot the chest
+							break;
 						}
-						handleLootActions(room); // loot the chest
+						else if (input == "b")
+							break;
+						else
+							cout << "Invalid choise" << endl;
 					}
-					else if (input == "b")
-						return;
-					else
-						cout << "Invalid choise" << endl;
 				}
 				else // if the chest is locked and the player does not have a key
+				{
 					cout << "This chest is locked. You need a key." << endl;
+					break;
+				}
 			}
-			return;
+			break;
 		}
 		else if (input == "b")
-			return;
+			break;
 		else
 			cout << "Invalid choise" << endl;
 	}

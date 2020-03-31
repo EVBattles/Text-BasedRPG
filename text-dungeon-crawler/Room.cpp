@@ -16,3 +16,15 @@ void Room :: clearEnemies()
 {
 	enemies.clear();
 }
+
+void Room::dropLoot(GameCharacter * enemy)
+{
+	int i = 0;
+	while (true)
+	{
+		items.push_back(enemy->loot[i]);
+		i++;
+		if (i >= enemy->loot.size())
+			break;
+	}
+}

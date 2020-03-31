@@ -1,4 +1,6 @@
 #include "GameCharacter.h"
+#include "Item.h"
+#include "Room.h"
 
 GameCharacter::GameCharacter(string n, int h, int a, int d)
 {
@@ -21,4 +23,9 @@ int GameCharacter::takeDamage(int amount)
 bool GameCharacter::checkIsDead()
 {
 	return currentHealth <= 0;
+}
+
+void GameCharacter::addLoot(Item item)
+{
+	loot.push_back(item);
 }

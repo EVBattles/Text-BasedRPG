@@ -21,25 +21,29 @@ int main()
 	cout << "You now have " << player.currentHealth << " health, " << player.attack << " attack, and " << player.defence << " defence." << endl;
 
 	// SET UP FIRST ROOM
-	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>());
+	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>()); // first room is empty
 
 	// SET UP SECOND ROOM
-	Item fork = Item("Fork", 0, 20, 0, true);
+	Item fork = Item("Fork", 0, 20, 0, true); // set up item
 	vector<Item> secondRoomItems;
-	secondRoomItems.push_back(fork);
-	Room secondRoom = Room(1, false, secondRoomItems, vector<GameCharacter>());
+	secondRoomItems.push_back(fork); // apply item to item group
+	Room secondRoom = Room(1, false, secondRoomItems, vector<GameCharacter>()); // apply item group to room
 
 	// SET UP THE THIRD ROOM
-	GameCharacter firstEnemy = GameCharacter("Goblin", 50, 15, 5);
-	vector<GameCharacter> thirdRoomEnemies;
-	thirdRoomEnemies.push_back(firstEnemy);
-	Room thirdRoom = Room(2, false, vector<Item>(), thirdRoomEnemies);
+	GameCharacter firstEnemy = GameCharacter("Goblin", 50, 15, 5); // set up enemy
+	Item fishbones = Item("Fishbones", 0, 1, 0, false); // set up loot
+	firstEnemy.addLoot(fishbones); // apply loot to enemy
+	vector<GameCharacter> thirdRoomEnemies; 
+	thirdRoomEnemies.push_back(firstEnemy); // apply enemy to enemy group
+	Room thirdRoom = Room(2, false, vector<Item>(), thirdRoomEnemies); // apply enemy group to room
 
 	// SET UP THE FOURTH ROOM
-	GameCharacter secondEnemy = GameCharacter("Zombie", 100, 20, 10);
+	GameCharacter secondEnemy = GameCharacter("Stone Golumn", 100, 20, 10); // set up enemy
+	Item diamond = Item("Diamond", 0, 0, 5, false); // set up loot
+	secondEnemy.addLoot(diamond); // apply loot to enemy
 	vector<GameCharacter> fourthRoomEnemies;
-	fourthRoomEnemies.push_back(secondEnemy);
-	Room fourthRoom = Room(3, true, vector <Item>(), fourthRoomEnemies);
+	fourthRoomEnemies.push_back(secondEnemy); // apply enemy to enemy group
+	Room fourthRoom = Room(3, true, vector <Item>(), fourthRoomEnemies); // apply enemy group to room
 
 	// PUT PLAYER IN DUNGEON
 	Dungeon dungeon = Dungeon(player);
