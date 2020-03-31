@@ -33,26 +33,6 @@ void Dungeon::handleLootActions(Room* room)
 	int size = room->items.size();
 	player.lootRoom(room);
 	room->clearLoot();
-	cout << "You open the chest and find a ";
-	for (int i = 0; i < size; i++)
-	{
-		cout << item.name;
-		if (i != size - 1)
-		{
-			cout << ", ";
-		}
-		else
-		{
-			cout << " ";
-		}
-	}
-	cout << endl;
-	cout << "In your inventory, you now have: " << endl;
-	for (int i = 0; i < player.inventory.size(); i++)
-	{
-		cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
-	}
-	cout << endl;
 	printStats();
 }
 
@@ -106,17 +86,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 					cin >> input;
 					if (input == "a")
 					{
-						cout << "You have found: " << endl;
-						for (int j = 0; j < player.currentRoom->items.size(); j++)
-						{
-							cout << player.currentRoom->items[j].name << " attack: " << player.currentRoom->items[j].attack << " defense: " << player.currentRoom->items[j].defence << endl;
-						}
 						player.lootRoom(player.currentRoom);
-						cout << "In your inventory, you now have: " << endl;
-						for (int i = 0; i < player.inventory.size(); i++)
-						{
-							cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
-						}
 						break;
 					}
 					else if (input == "b")

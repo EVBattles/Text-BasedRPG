@@ -12,8 +12,10 @@ class Item
 public:
 	string name;
 	int health, attack, defence;
+	bool isCoin;
+	int coinWorth;
 	bool isLocked;
-	Item(string, int, int, int, bool); //name, health, attack, defence, isLocked
+	Item(string, int, int, int, bool, bool); // name, health, attack, defence, isLocked, isCoin
 };
 
 #endif
