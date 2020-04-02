@@ -12,5 +12,4 @@ My expected updates include
 -Allow for fighting multiple enemies
 -Add traps mechanic
 -Add health potion mechanic
--Have defence stat effect combat
 -Expand the dungeon to more than 4 rooms
