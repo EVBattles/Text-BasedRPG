@@ -1,6 +1,7 @@
 # Text-BasedRPG
 The initial code is constructed with the aid of the Zenva course "Learn C++ By Making a Text-Based RPG".
 All of the subsiquent updates following the initial commit are my own code expantions to the game. 
+I have included a full file on notes for the creation of a dungeon level in another file.
 
 My expected updates include
 
