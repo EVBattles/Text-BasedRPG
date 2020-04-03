@@ -19,7 +19,7 @@ My expected updates include
 
 -Allow for fighting multiple enemies
 
--Add traps mechanic
+-Add traps mechanic [INCLUDED]
 
 -Clean up menues and interface
 
