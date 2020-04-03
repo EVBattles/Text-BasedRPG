@@ -21,6 +21,8 @@ My expected updates include
 
 -Add traps mechanic
 
+-Clean up menues and interface
+
 -Add health potion mechanic [INCLUDED]
 
 -Expand the dungeon to more than 4 rooms
