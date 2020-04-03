@@ -120,24 +120,33 @@ return 0;
 int main()
 {
 	// SET UP PLAYER
-	cout << "Welcome to our dungeon crawler! What is your name?" << endl;
+	cout << "Welcome to my dungeon crawler! What is your name?" << endl;
 	string playerName;
 	cin >> playerName;
 	Player player = Player(playerName, 100, 20, 10);
-	cout << "You have " << player.coinPurse << " coins" << endl;
-	cout << "You have " << player.currentHealth << " health, " << player.attack - 5 << " attack, and " << player.defence << " defense." << endl;
-	cout << "In your inventory, you have: " << endl;
+	cout << endl << "Hello " << playerName << "!" << endl << endl;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+	cout << endl;
+	cout << "Here is a little information about your starting character." << endl << endl << endl;
+	cout << "You currently have " << player.coinPurse << " coins in your coin purse." << endl << endl;
+	cout << "You currently have " << player.currentHealth << " health, " << player.attack - 5 << " attack, and " << player.defence << " defense." << endl << endl;
+	cout << "In your inventory, you currently have: " << endl;
 	for (int i = 0; i < player.inventory.size(); i++)
 	{
-		cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defence: " << player.inventory[i].defence << endl;
+		cout << player.inventory[i].name << " attack: " << player.inventory[i].attack << " defense: " << player.inventory[i].defence << endl;
 	}
-	cout << "You now have " << player.currentHealth << " health, " << player.attack << " attack, and " << player.defence << " defense." << endl;
-
+	cout << endl;
+	cout << "With your starting items you now have " << player.currentHealth << " health, " << player.attack << " attack, and " << player.defence << " defense." << endl << endl;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl << endl;
+	cout << "Now it is time to start the game!!!" << endl;
+	cout << " _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _" << endl;
+	cout << "| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| | " << endl;
+	cout << endl << endl << endl << endl;
 	// SET UP FIRST ROOM
 	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>()); // first room is empty
 
 	// SET UP SECOND ROOM
-	/*Item fork = Item("Fork", 0, 20, 0); // set up item
+	Item fork = Item("Fork", 0, 20, 0); // set up item
 	Item healthpotion1 = Item("Health Potion", 0, 0, 0);
 	healthpotion1.potionHealthAddAmount = 20;
 	fork.isLocked = true;
@@ -145,9 +154,9 @@ int main()
 	healthpotion1.isPotion = true;
 	vector<Item> secondRoomItems;
 	secondRoomItems.push_back(fork); // apply item to item group
-	secondRoomItems.push_back(healthpotion1);*/
-	Room secondRoom = Room(1, false, vector<Item>(), vector<GameCharacter>()); // apply item group to room
-	secondRoom.isTrap = true;
+	secondRoomItems.push_back(healthpotion1);
+	Room secondRoom = Room(1, false, secondRoomItems, vector<GameCharacter>()); // apply item group to room
+	//secondRoom.isTrap = true;
 
 	// SET UP THE THIRD ROOM
 	GameCharacter firstEnemy = GameCharacter("Goblin", 50, 15, 5); // set up enemy

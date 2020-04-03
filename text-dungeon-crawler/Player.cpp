@@ -35,7 +35,7 @@ void Player::increaseStats(int h, int a, int d) //health, attack, defence
 
 void Player::lootRoom(Room* room)
 {
-	cout << "You have found: " << endl;
+	cout << "You have found: " << endl << endl;
 	vector<Item> items = room->items; // -> = pointer
 	for (int i = 0; i < items.size(); i++)
 	{
@@ -51,16 +51,20 @@ void Player::lootRoom(Room* room)
 		}
 		else
 		{
-			cout << currentRoom->items[i].name << " attack: " << currentRoom->items[i].attack << " defense: " << currentRoom->items[i].defence << endl;
+			cout << currentRoom->items[i].name << " attack: " << currentRoom->items[i].attack << ", defense: " << currentRoom->items[i].defence << endl;
 			addItem(items[i]);
 		}
 	}
-	cout << "You now have " << coinPurse << " coins." << endl;
-	cout << "In your inventory, you now have: " << endl;
+	cout << endl;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+	cout << "You now have " << coinPurse << " coins." << endl << endl;
+	cout << "In your inventory, you now have: " << endl << endl;
 	for (int i = 0; i < inventory.size(); i++)
 	{
-		cout << inventory[i].name << " attack: " << inventory[i].attack << " defense: " << inventory[i].defence << endl;
+		cout << inventory[i].name << " attack: " << inventory[i].attack << ", defense: " << inventory[i].defence << endl;
 	}
+	cout << endl << "You now have " << currentHealth << " health, " << attack << " attack, and " << defence << " defense." << endl;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
 }
 
 void Player::takeHealthPotion(Item * potion)

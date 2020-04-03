@@ -20,12 +20,12 @@ void Dungeon::printActions(int numActions, string actions[])
 
 void Dungeon::printStats()
 {
-	cout << "You now have " << Dungeon::player.currentHealth << " health, " << Dungeon::player.attack << " attack, and " << player.defence << " defense." << endl;
+	cout << "You now have " << Dungeon::player.currentHealth << " health, " << Dungeon::player.attack << " attack, and " << player.defence << " defense." << endl << endl;
 }
 
 void Dungeon::printHealth()
 {
-	cout << "You now have " << Dungeon::player.currentHealth << " health." << endl;
+	cout << "You now have " << Dungeon::player.currentHealth << " health." << endl << endl;
 }
 
 void Dungeon::handleLootActions(Room* room)
@@ -34,7 +34,6 @@ void Dungeon::handleLootActions(Room* room)
 	int size = room->items.size();
 	player.lootRoom(room);
 	room->clearLoot();
-	printStats();
 }
 
 void Dungeon::handleFightActions(GameCharacter * enemy)
@@ -93,10 +92,11 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		// check if enemy is dead
 		if (enemy->checkIsDead())
 		{
-			cout << "You win! You have defeated the " << enemy->name << "." << endl;
+			cout << "You win! You have defeated the " << enemy->name << "." << endl << endl;
 			player.increaseStats(10, 5, 5); // this is a level up, can go back and change this and print out changes
 			cout << "You have leveled up! " << endl;
 			printStats();
+			cout << endl;
 			if (enemy->loot.size() >= 0)
 			{
 				player.currentRoom->dropLoot(enemy);
@@ -110,6 +110,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 					cin >> input;
 					if (input == "a")
 					{
+						cout << endl << endl;
 						player.lootRoom(player.currentRoom);
 						break;
 					}
@@ -125,6 +126,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 			return;
 		}
 		// handle enemy actions
+		cout << endl << endl;
 		int echance;
 		srand(time(NULL));
 		echance = rand() % 20 + 1;
@@ -146,10 +148,10 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 
 void Dungeon::handleRoomWithTrap(Room* room)
 {
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 	cout << "This room is a trap!" << endl;
 	srand(time(NULL));
 	int trapType = rand() % 100 + 1;
-	cout << trapType << endl;
 	if (trapType < 10) // 9%
 	{
 		int damage = rand() % 30 + 1;
@@ -223,10 +225,12 @@ void Dungeon::handleRoomWithTrap(Room* room)
 		else
 			cout << "Invalid choise" << endl;
 	}
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 }
 
 void Dungeon :: handleRoomWithEnemy(Room* room)
 {
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 		GameCharacter enemy = room->enemies.front();
 		cout << "You enter the room and see a " << enemy.name << " in the middle." << endl;
 		string actions[]{ "a. Fight the " + enemy.name, "b. Retreat" };
@@ -249,10 +253,12 @@ void Dungeon :: handleRoomWithEnemy(Room* room)
 			else
 				cout << "Invalid choise" << endl;
 		}
+		cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 }
 
 void Dungeon :: handleRoomWithChest(Room* room)
 {
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 	cout << "You enter the room and see a large chest in the middle." << endl;
 	string actions[]{ "a. Loot the chest", "b. Move to another room"};
 	while (true)
@@ -325,10 +331,12 @@ void Dungeon :: handleRoomWithChest(Room* room)
 		else
 			cout << "Invalid choise" << endl;
 	}
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 }
 
 void Dungeon::handleEmptyRoom(Room* room)
 {
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 	cout << "You enter the room but it is empty." << endl;
 	string actions[]{ "a. Move to another room"};
 	while (true)
@@ -341,6 +349,7 @@ void Dungeon::handleEmptyRoom(Room* room)
 		else
 			cout << "Invalid choise" << endl;
 	}
+	cout << "-----------------------------------------------------------------------------------------------------------------" << endl << endl;
 }
 
 void Dungeon::enterRoom(Room* room)
@@ -461,7 +470,7 @@ int Dungeon::performEndGameLogic()
 
 int Dungeon::runDungeon() //determines win or lose (return 0 for lose)
 {
-	cout << "Welcome to the dungeon! Inside you will find treasure but also enemies. Enter at your own risk." << endl;
+	cout << "Welcome to the dungeon! Inside you will find treasure but also enemies. Enter at your own risk." << endl << endl; // enter story here when have it
 	player.currentRoom = &rooms[0];
 	player.previousRoom = &rooms[0];
 	
@@ -479,6 +488,8 @@ int Dungeon::runDungeon() //determines win or lose (return 0 for lose)
 		enterRoom(player.currentRoom);
 		if (player.checkIsDead())
 		{
+			cout << " _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _" << endl;
+			cout << "| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| | " << endl;
 			// lose the game and exit
 			cout << "Game over! Try again?" << endl;
 			return performEndGameLogic();
@@ -489,16 +500,12 @@ int Dungeon::runDungeon() //determines win or lose (return 0 for lose)
 			{
 				if (player.currentRoom->enemies.size() == 0)
 				{
+					cout << " _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _" << endl;
+					cout << "| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| | " << endl;
 					// win the game
 					cout << "You win! Play again?" << endl; // change this to next level if adding extra levels to dungeon
 					// if extra levels, need to set up another statement like this to actually end the game
 					return performEndGameLogic();
-				}
-				else
-				{
-					// door is locked, kill all enemies
-					cout << "The door is still locked. Kill all enemies to win the game." << endl;
-					cout << "You have " << player.currentRoom->enemies.size() << " left." << endl;
 				}
 			}
 		}
