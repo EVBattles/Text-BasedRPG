@@ -11,6 +11,7 @@ class Room
 public:
 	int pos;
 	bool isExit;
+	bool isTrap;
 	vector<Item> items;
 	vector<GameCharacter> enemies;
 	Room(int = 0, bool = false, vector<Item> = vector<Item>(), vector<GameCharacter> = vector<GameCharacter>());

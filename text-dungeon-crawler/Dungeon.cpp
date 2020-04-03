@@ -1,6 +1,7 @@
 #include "Dungeon.h"
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -70,6 +71,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 				cout << player.inventory[hold].name << " " << player.inventory[hold].isPotion << endl;
 			}
 			int chance;
+			srand(time(NULL));
 			chance = rand() % 20 + 1;
 			int damage = 0;
 			if (chance >= 10)
@@ -124,6 +126,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		}
 		// handle enemy actions
 		int echance;
+		srand(time(NULL));
 		echance = rand() % 20 + 1;
 		int damage = 0;
 		if (echance >= 10)
@@ -138,6 +141,87 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		{
 			return;
 		}
+	}
+}
+
+void Dungeon::handleRoomWithTrap(Room* room)
+{
+	cout << "This room is a trap!" << endl;
+	srand(time(NULL));
+	int trapType = rand() % 100 + 1;
+	cout << trapType << endl;
+	if (trapType < 10) // 9%
+	{
+		int damage = rand() % 30 + 1;
+		player.takeDamage(damage);
+		if (damage < player.defence)
+			damage = 0;
+		else
+			damage = damage - player.defence;
+		cout << "A giant boulder comes rolling out of the door above you and squishes you beneath." << endl;
+		cout << "You take " << damage << " damage." << endl;
+		printStats();
+	}
+	else if (10 <= trapType && trapType < 40) // 30%
+	{
+		int damage = rand() % 18 + 1;
+		player.takeDamage(damage);
+		if (damage < player.defence)
+			damage = 0;
+		else
+			damage = damage - player.defence;
+		cout << "The floor opens up and you fall onto the spiked floor beneath." << endl;
+		cout << "You take " << damage << " damage." << endl;
+		printStats();
+	}
+	else if (40 <= trapType && trapType < 45) // 5%
+	{
+		int damage = rand() % 36 + 1;
+		player.takeDamage(damage);
+		if (damage < player.defence)
+			damage = 0;
+		else
+			damage = damage - player.defence;
+		cout << "You walk into the room and an explosion of fire and magic engulf you." << endl;
+		cout << "You take " << damage << " damage." << endl;
+		printStats();
+	}
+	else if (45 <= trapType && trapType < 70) // 25%
+	{
+		int damage = rand() % 24 + 1;
+		player.takeDamage(damage);
+		if (damage < player.defence)
+			damage = 0;
+		else
+			damage = damage - player.defence;
+		cout << "A snake crawls out from the darkness and strikes your leg." << endl;
+		cout << "You take " << damage << " damage." << endl;
+		printStats();
+	}
+	else // 31%
+	{
+		int damage = rand() % 12 + 1;
+		player.takeDamage(damage);
+		if (damage < player.defence)
+			damage = 0;
+		else
+			damage = damage - player.defence;
+		cout << "The ground is uneven here and you stub your toe." << endl;
+		cout << "You take " << damage << " damage." << endl;
+		printStats();
+	}
+	room->isTrap = false;
+	cout << "What would you like to do now?" << endl;
+	string actions[]{ "a. Move to another room" };
+	while (true)
+	{
+		printActions(1, actions);
+		string input;
+		cin >> input;
+		if (input == "a")
+			return;
+		else
+			cout << "Invalid choise" << endl;
 	}
 }
 
@@ -263,7 +347,9 @@ void Dungeon::enterRoom(Room* room)
 {
 	if (room->enemies.size() != 0)
 		handleRoomWithEnemy(room); // handle room with enemy
-	else if (room->items.size() != 0)
+	else if (room->isTrap == true)
+		handleRoomWithTrap(room);
+	else if (room->items.size() != 0 && room->isTrap == false)
 		handleRoomWithChest(room); // handle room with chest
 	else
 		handleEmptyRoom(room); // handle empty room

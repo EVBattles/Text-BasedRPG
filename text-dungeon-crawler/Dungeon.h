@@ -16,6 +16,7 @@ public:
 	void handleEmptyRoom(Room*);
 	void handleRoomWithChest(Room*);
 	void handleRoomWithEnemy(Room*);
+	void handleRoomWithTrap(Room*);
 	void handleLootActions(Room*);
 	void handleFightActions(GameCharacter*);
 	void handleMovementActions(Room*);
