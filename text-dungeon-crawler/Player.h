@@ -18,6 +18,7 @@ public:
 	void lootRoom(Room*);
 	void changeRooms(Room*); //current room
 	void addCoin(int); // add coins to coinPurse
+	void takeHealthPotion(Item*); // quearry player to take potion
 };
 
 #endif

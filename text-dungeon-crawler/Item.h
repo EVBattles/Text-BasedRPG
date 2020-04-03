@@ -15,7 +15,10 @@ public:
 	bool isCoin;
 	int coinWorth;
 	bool isLocked;
-	Item(string, int, int, int, bool, bool); // name, health, attack, defence, isLocked, isCoin
+	bool isPotion;
+	bool isKey;
+	int potionHealthAddAmount;
+	Item(string, int, int, int); // name, health, attack, defence, isLocked, isCoin
 };
 
 #endif

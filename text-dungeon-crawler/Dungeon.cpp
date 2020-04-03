@@ -19,7 +19,7 @@ void Dungeon::printActions(int numActions, string actions[])
 
 void Dungeon::printStats()
 {
-	cout << "You now have " << Dungeon::player.currentHealth << " health, " << Dungeon::player.attack << " attack, and " << player.defence << " defence." << endl;
+	cout << "You now have " << Dungeon::player.currentHealth << " health, " << Dungeon::player.attack << " attack, and " << player.defence << " defense." << endl;
 }
 
 void Dungeon::printHealth()
@@ -44,9 +44,31 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		printActions(2, actions);
 		string input;
 		cin >> input;
+		int i = 0;
+		int hold = 0;
+		bool potion = false;
 		// handle player actions
 		if (input == "a")
 		{
+			while (true)
+			{
+				if (player.inventory[i].isPotion == true)
+				{
+					potion = true;
+					hold = i;
+					break;
+				}
+				i++;
+				if (i >= player.inventory.size())
+				{
+					break;
+				}
+			}
+			if (potion == true)
+			{
+				player.takeHealthPotion(&player.inventory[hold]);
+				cout << player.inventory[hold].name << " " << player.inventory[hold].isPotion << endl;
+			}
 			int chance;
 			chance = rand() % 20 + 1;
 			int damage = 0;
@@ -96,7 +118,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 					else
 						cout << "Invalid choise" << endl;
 				}
-				}
+			}
 			player.currentRoom->clearEnemies();
 			return;
 		}
@@ -107,7 +129,7 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 		if (echance >= 10)
 			damage = player.takeDamage(enemy->attack);
 		else if (5 <= echance)
-			damage = enemy->takeDamage(enemy->attack / 2);
+			damage = player.takeDamage(enemy->attack / 2);
 		else
 			cout << enemy->name << " missed." << endl;
 		cout << "The " << enemy->name << " does " << damage << " damage." << endl;
@@ -121,28 +143,28 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 
 void Dungeon :: handleRoomWithEnemy(Room* room)
 {
-	GameCharacter enemy = room->enemies.front();
-	cout << "You enter the room and see a " << enemy.name << " in the middle." << endl;
-	string actions[]{ "a. Fight the " + enemy.name, "b. Retreat" };
-	while (true)
-	{
-		printActions(2, actions);
-		string input;
-		cin >> input;
-		if (input == "a")
+		GameCharacter enemy = room->enemies.front();
+		cout << "You enter the room and see a " << enemy.name << " in the middle." << endl;
+		string actions[]{ "a. Fight the " + enemy.name, "b. Retreat" };
+		while (true)
 		{
-			handleFightActions(&enemy);// fight
-			return;
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				handleFightActions(&enemy);// fight
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(player.previousRoom);
+				enterRoom(player.currentRoom);
+				return;
+			}
+			else
+				cout << "Invalid choise" << endl;
 		}
-		else if (input == "b")
-		{
-			player.changeRooms(player.previousRoom);
-			enterRoom(player.currentRoom);
-			return;
-		}
-		else
-			cout << "Invalid choise" << endl;
-	}
 }
 
 void Dungeon :: handleRoomWithChest(Room* room)
@@ -155,14 +177,16 @@ void Dungeon :: handleRoomWithChest(Room* room)
 		string input;
 		cin >> input;
 		bool key = false;
+		int hold = 0;
 		// check player's inventory for a key
 		int i = 0; // while loop 1 counter
 		int r = 0; // while loop 2 counter
 		while(true)
 		{
-			if (player.inventory[i].name == "Key")
+			if (player.inventory[i].isKey == true)
 			{
 				key = true;
+				hold = i;
 				break;
 			}
 			i++;
@@ -193,16 +217,8 @@ void Dungeon :: handleRoomWithChest(Room* room)
 							for (int t = 0; t < room->items.size(); t++)
 								room->items[i].isLocked = false;
 							// remove key from inventory
-							while (true)
-							{
-								if (player.inventory[r].name == "Key")
-								{
-									//append the word "-used" to key name string
-									player.inventory[r].name += " - used";
-									break;
-								}
-								r++;
-							}
+							player.inventory[hold].name += "-used";
+							player.inventory[hold].isKey = false;
 							handleLootActions(room); // loot the chest
 							break;
 						}

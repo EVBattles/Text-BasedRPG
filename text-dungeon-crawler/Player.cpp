@@ -5,9 +5,10 @@ using namespace std;
 
 Player::Player(string n, int h, int a, int d) : GameCharacter(n, h, a, d) //sets up new player
 {
-	Item dagger = Item("Dagger", 0, 5, 0, false, false);
+	Item dagger = Item("Dagger", 0, 5, 0);
 	addItem(dagger);
-	Item key = Item("Key", 0, 0, 0, false, false);
+	Item key = Item("Key", 0, 0, 0);
+	key.isKey = true;
 	addItem(key);
 	int startingCoin = 20;
 	addCoin(startingCoin);
@@ -43,6 +44,11 @@ void Player::lootRoom(Room* room)
 			cout << items[i].name << endl;
 			addCoin(items[i].coinWorth);
 		}
+		else if (items[i].isPotion == true)
+		{
+			takeHealthPotion(&items[i]);
+			addItem(items[i]);
+		}
 		else
 		{
 			cout << currentRoom->items[i].name << " attack: " << currentRoom->items[i].attack << " defense: " << currentRoom->items[i].defence << endl;
@@ -53,7 +59,35 @@ void Player::lootRoom(Room* room)
 	cout << "In your inventory, you now have: " << endl;
 	for (int i = 0; i < inventory.size(); i++)
 	{
-		cout << inventory[i].name << " attack: " << inventory[i].attack << " defence: " << inventory[i].defence << endl;
+		cout << inventory[i].name << " attack: " << inventory[i].attack << " defense: " << inventory[i].defence << endl;
+	}
+}
+
+void Player::takeHealthPotion(Item * potion)
+{
+	cout << "Would you like to take a health potion?" << endl;
+	string actions[] = { "a. Yes", "b. No" };
+	cout << "Choose an action:" << endl;
+	for (int i = 0; i < 2; i++) {
+		cout << actions[i] << endl;
+	}
+	string input;
+	cin >> input;
+	while (true)
+	{
+		if (input == "a")
+		{
+			cout << "You have taken the health potion." << endl;
+			currentHealth += potion->potionHealthAddAmount;
+			cout << "You now have " << currentHealth << " health." << endl;
+			potion->name += "-empty";
+			potion->isPotion = false;
+			break;
+		}
+		else if (input == "b")
+			break;
+		else
+			cout << "Inproper input" << endl;
 	}
 }
 
