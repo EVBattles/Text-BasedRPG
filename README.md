@@ -21,7 +21,7 @@ My expected updates include
 
 -Add traps mechanic [INCLUDED]
 
--Clean up menues and interface
+-Clean up menues and interface [INCLUDED]
 
 -Add health potion mechanic [INCLUDED]
 
