@@ -15,6 +15,7 @@ Make sure to add it to the dungeon after you are done designing each room by dun
 
 Make sure to also to set the final room isExit to true to allow the end player to win. 
 
+To edit trap effects and percentages, go to Dungeon.cpp->handleRoomsWithTraps().
 
 --------------------------------------------------------------------ITEMS:----------------------------------------------------------
 To create an item, call Item #name of item# = Item(name, health bonus, attack bonus, defense bonus) 
@@ -37,7 +38,8 @@ able to use them again.
 An item can either be assigned to a room which will put it in a chest, which can be locked, or assigned as loot to a monster. 
 
 To assign an item to a room, make sure to create a vector of items for the room and push each item into that vector. Once the vector 
-is filled, follow the instructions regarding rooms to create the room with this vector. 
+is filled, follow the instructions regarding rooms to create the room with this vector. Make sure to set it's isLocked value to false 
+if it is in a chest that is not locked and true if it is in a chest that is locked. 
 
 To assign an item as loot to a monster, call the enemy #enemy name#.addLoot(#item name#); to add the item to its loot inventory. 
 
