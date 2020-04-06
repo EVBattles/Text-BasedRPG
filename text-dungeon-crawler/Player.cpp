@@ -7,9 +7,6 @@ Player::Player(string n, int h, int a, int d) : GameCharacter(n, h, a, d) //sets
 {
 	Item dagger = Item("Dagger", 0, 5, 0);
 	addItem(dagger);
-	Item key = Item("Key", 0, 0, 0);
-	key.isKey = true;
-	addItem(key);
 	int startingCoin = 20;
 	addCoin(startingCoin);
 }
@@ -46,6 +43,7 @@ void Player::lootRoom(Room* room)
 		}
 		else if (items[i].isPotion == true)
 		{
+			cout << items[i].name << endl;
 			takeHealthPotion(&items[i]);
 			addItem(items[i]);
 		}

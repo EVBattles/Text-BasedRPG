@@ -123,12 +123,12 @@ void Dungeon::handleFightActions(GameCharacter * enemy)
 				}
 			}
 			player.currentRoom->clearEnemies();
+			player.currentRoom->clearLoot();
 			return;
 		}
 		// handle enemy actions
 		cout << endl << endl;
 		int echance;
-		srand(time(NULL));
 		echance = rand() % 20 + 1;
 		int damage = 0;
 		if (echance >= 10)
@@ -154,7 +154,7 @@ void Dungeon::handleRoomWithTrap(Room* room)
 	int trapType = rand() % 100 + 1;
 	if (trapType < 10) // 9%
 	{
-		int damage = rand() % 30 + 1;
+		int damage = rand() % 30 + 10;
 		player.takeDamage(damage);
 		if (damage < player.defence)
 			damage = 0;
@@ -166,7 +166,7 @@ void Dungeon::handleRoomWithTrap(Room* room)
 	}
 	else if (10 <= trapType && trapType < 40) // 30%
 	{
-		int damage = rand() % 18 + 1;
+		int damage = rand() % 28 + 10;
 		player.takeDamage(damage);
 		if (damage < player.defence)
 			damage = 0;
@@ -178,7 +178,7 @@ void Dungeon::handleRoomWithTrap(Room* room)
 	}
 	else if (40 <= trapType && trapType < 45) // 5%
 	{
-		int damage = rand() % 36 + 1;
+		int damage = rand() % 46 + 10;
 		player.takeDamage(damage);
 		if (damage < player.defence)
 			damage = 0;
@@ -190,7 +190,7 @@ void Dungeon::handleRoomWithTrap(Room* room)
 	}
 	else if (45 <= trapType && trapType < 70) // 25%
 	{
-		int damage = rand() % 24 + 1;
+		int damage = rand() % 34 + 10;
 		player.takeDamage(damage);
 		if (damage < player.defence)
 			damage = 0;
@@ -202,7 +202,7 @@ void Dungeon::handleRoomWithTrap(Room* room)
 	}
 	else // 31%
 	{
-		int damage = rand() % 12 + 1;
+		int damage = rand() % 22 + 10;
 		player.takeDamage(damage);
 		if (damage < player.defence)
 			damage = 0;
@@ -280,7 +280,7 @@ void Dungeon :: handleRoomWithChest(Room* room)
 				break;
 			}
 			i++;
-			if (i > player.inventory.size())
+			if (i >= player.inventory.size())
 			{
 				break;
 			}
@@ -305,7 +305,7 @@ void Dungeon :: handleRoomWithChest(Room* room)
 						if (input == "a")
 						{// set all items in the room to unlock
 							for (int t = 0; t < room->items.size(); t++)
-								room->items[i].isLocked = false;
+								room->items[t].isLocked = false;
 							// remove key from inventory
 							player.inventory[hold].name += "-used";
 							player.inventory[hold].isKey = false;
@@ -370,18 +370,18 @@ void Dungeon::handleMovementActions(Room * room)
 	{
 		if (room->pos == 0)
 		{
-			string actions[] = { "a. Move right", "b. Move down" };
+			string actions[] = { "a. Move down", "b. Move right" };
 			printActions(2, actions);
 			string input;
 			cin >> input;
 			if (input == "a")
 			{
-				player.changeRooms(&rooms[1]);
+				player.changeRooms(&rooms[2]);
 				return;
 			}
 			else if (input == "b")
 			{
-				player.changeRooms(&rooms[2]);
+				player.changeRooms(&rooms[1]);
 				return;
 			}
 			else
@@ -407,18 +407,207 @@ void Dungeon::handleMovementActions(Room * room)
 		}
 		else if (room->pos == 2)
 		{
+			string actions[] = { "a. Move down", "b. Move up"};
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[3]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[0]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 3)
+		{
 			string actions[] = { "a. Move up", "b. Move right" };
 			printActions(2, actions);
 			string input;
 			cin >> input;
 			if (input == "a")
 			{
-				player.changeRooms(&rooms[0]);
+				player.changeRooms(&rooms[2]);
 				return;
 			}
 			else if (input == "b")
 			{
+				player.changeRooms(&rooms[4]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 4)
+		{
+			string actions[] = { "a. Move left", "b. Move down", "c. Move up" };
+			printActions(3, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
 				player.changeRooms(&rooms[3]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[10]);
+				return;
+			}
+			else if (input == "c")
+			{
+				player.changeRooms(&rooms[5]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 5)
+		{
+			string actions[] = { "a. Move down", "b. Move right" };
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[4]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[6]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 6)
+		{
+			string actions[] = { "a. Move up", "b. Move down", "c. Move left" };
+			printActions(3, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[7]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[8]);
+				return;
+			}
+			else if (input == "c")
+			{
+				player.changeRooms(&rooms[5]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room -> pos == 7)
+		{
+			string actions[] = { "a. Move down" };
+			printActions(1, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[6]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 8)
+		{
+			string actions[] = { "a. Move down", "b. Move up" };
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[9]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[6]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 9)
+		{
+			string actions[] = { "a. Move up", "b. Move right" };
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[8]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[12]);
+				return;
+			}
+		else
+		{
+			cout << "Invalid choise" << endl;
+		}
+		}
+		else if (room->pos == 10)
+		{
+			string actions[] = { "a. Move up", "b. Move left" };
+			printActions(2, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[4]);
+				return;
+			}
+			else if (input == "b")
+			{
+				player.changeRooms(&rooms[11]);
+				return;
+			}
+			else
+			{
+				cout << "Invalid choise" << endl;
+			}
+		}
+		else if (room->pos == 11)
+		{
+			string actions[] = { "a. Move right" };
+			printActions(1, actions);
+			string input;
+			cin >> input;
+			if (input == "a")
+			{
+				player.changeRooms(&rooms[10]);
 				return;
 			}
 			else

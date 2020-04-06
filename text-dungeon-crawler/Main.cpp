@@ -142,55 +142,152 @@ int main()
 	cout << " _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _   _" << endl;
 	cout << "| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| |_| | " << endl;
 	cout << endl << endl << endl << endl;
-	// SET UP FIRST ROOM
-	Room firstRoom = Room(0, false, vector<Item>(), vector<GameCharacter>()); // first room is empty
+	
+	// SET UP ROOM 0
+	Room entrance = Room(0, false, vector<Item>(), vector<GameCharacter>()); // first room is empty
 
-	// SET UP SECOND ROOM
-	Item fork = Item("Fork", 0, 20, 0); // set up item
+	// ------------------------------------------------------------ SET UP ROOM 1
+	// set up items
+	Item armor = Item("Armor", 0, 0, 20);
 	Item healthpotion1 = Item("Health Potion", 0, 0, 0);
-	healthpotion1.potionHealthAddAmount = 20;
-	fork.isLocked = true;
-	healthpotion1.isLocked = true;
 	healthpotion1.isPotion = true;
-	vector<Item> secondRoomItems;
-	secondRoomItems.push_back(fork); // apply item to item group
-	secondRoomItems.push_back(healthpotion1);
-	Room secondRoom = Room(1, false, secondRoomItems, vector<GameCharacter>()); // apply item group to room
-	//secondRoom.isTrap = true;
+	healthpotion1.potionHealthAddAmount = 50;
+	armor.isLocked = true;
+	healthpotion1.isLocked = true;
+	// apply items to group
+	vector<Item> roomOneItems;
+	roomOneItems.push_back(armor);
+	roomOneItems.push_back(healthpotion1);
+	// apply all to room
+	Room roomOne = Room(1, false, roomOneItems, vector<GameCharacter>());
 
-	// SET UP THE THIRD ROOM
-	GameCharacter firstEnemy = GameCharacter("Goblin", 50, 15, 5); // set up enemy
-	Item fishbones = Item("Fishbones", 0, 1, 0); // set up loot
-	Item coin = Item("20 Gold Coins", 0, 0, 0);
-	coin.isCoin = true;
-	coin.coinWorth = 20;
-	firstEnemy.addLoot(fishbones); // apply loot to enemy
-	firstEnemy.addLoot(coin);
-	vector<GameCharacter> thirdRoomEnemies; 
-	thirdRoomEnemies.push_back(firstEnemy); // apply enemy to enemy group
-	Room thirdRoom = Room(2, false, vector<Item>(), thirdRoomEnemies); // apply enemy group to room
+	// ------------------------------------------------------------ SET UP ROOM 2
+	// set up enemy
+	GameCharacter snake = GameCharacter("Snake", 50, 15, 5);
+	// set up loot
+	Item shield = Item("Shield", 0, 0, 5);
+	// add loot to enemy
+	snake.addLoot(shield);
+	vector<GameCharacter> room2Enemies;
+	room2Enemies.push_back(snake);
+	// apply all to room
+	Room roomTwo = Room(2, false, vector<Item>(), room2Enemies);
 
-	// SET UP THE FOURTH ROOM
-	GameCharacter secondEnemy = GameCharacter("Stone Golumn", 100, 20, 10); // set up enemy
-	Item diamond = Item("Diamond", 0, 0, 5); // set up loot
-	Item healthpotion2 = Item("Health Potion", 0, 0, 0);
-	healthpotion2.potionHealthAddAmount = 20;
-	healthpotion2.isPotion = true;
-	secondEnemy.addLoot(diamond); // apply loot to enemy
-	secondEnemy.addLoot(healthpotion2);
-	vector<GameCharacter> fourthRoomEnemies;
-	fourthRoomEnemies.push_back(secondEnemy); // apply enemy to enemy group
-	Room fourthRoom = Room(3, true, vector <Item>(), fourthRoomEnemies); // apply enemy group to room
+	// ------------------------------------------------------------ SET UP ROOM 3
+	// set up items
+	Item bow = Item("Bow", 0, 15, 0);
+	Item coins = Item("200 Coins", 0, 0, 0);
+	coins.isCoin = true;
+	coins.coinWorth = 200;
+	bow.isLocked = false;
+	coins.isLocked = false;
+	Item diamonds = Item("Diamonds", 0, 5, 0);
+	diamonds.isLocked = false;
+	// add items to group
+	vector<Item> roomThreeItems;
+	roomThreeItems.push_back(bow);
+	roomThreeItems.push_back(coins);
+	roomThreeItems.push_back(diamonds);
+	// apply all to room
+	Room roomThree = Room(3, false, roomThreeItems, vector<GameCharacter>());
+
+	// ------------------------------------------------------------ SET UP ROOM 4
+	// set up items
+	Item healthPotion2 = Item("Health Potion", 0, 0, 0);
+	healthPotion2.isPotion = true;
+	healthPotion2.isLocked = false;
+	healthPotion2.potionHealthAddAmount = 50;
+	// add items to group
+	vector<Item> roomFourItems;
+	roomFourItems.push_back(healthPotion2);
+	// apply all to room
+	Room roomFour = Room(4, false, roomFourItems, vector<GameCharacter>());
+
+	// ------------------------------------------------------------ SET UP ROOM 5
+	// set up enemy
+	GameCharacter spider = GameCharacter("spider", 100, 30, 10);
+	// set up items
+	Item knife = Item("Knife", 0, 6, 0);
+	Item key1 = Item("Key", 0, 0, 0);
+	key1.isKey = true;
+	// add items to enemy loot
+	spider.addLoot(knife);
+	spider.addLoot(key1);
+	vector<GameCharacter> room5Enemies;
+	room5Enemies.push_back(spider);
+	// apply all to room
+	Room roomFive = Room(5, false, vector<Item>(), room5Enemies);
+
+	// ------------------------------------------------------------ SET UP ROOM 6
+	// set up items
+	Item easterEgg = Item("Easter Egg", 0, 0, 0);
+	easterEgg.isLocked = true;
+	// add items to group
+	vector<Item> roomSixItems;
+	roomSixItems.push_back(easterEgg);
+	// apply all to room
+	Room roomSix = Room(6, false, roomSixItems, vector<GameCharacter>());
+
+	// ------------------------------------------------------------ SET UP ROOM 7
+	Room roomSeven = Room(7, false, vector<Item>(), vector<GameCharacter>());
+	roomSeven.isTrap = true;
+
+	// ------------------------------------------------------------ SET UP ROOM 8 
+	Room roomEight = Room(8, false, vector<Item>(), vector<GameCharacter>());
+	roomEight.isTrap = true;
+
+	// ------------------------------------------------------------ SET UP ROOM 9
+	// set up enemy
+	GameCharacter dragon = GameCharacter("Big Red Dragon", 400, 60, 50);
+	// set up loot
+	Item stolenRiches = Item("Stolen Riches", 0, 0, 0);
+	Item key2 = Item("Key", 0, 0, 0);
+	key2.isKey = true;
+	// apply loot to enemy
+	dragon.addLoot(stolenRiches);
+	dragon.addLoot(key2);
+	vector<GameCharacter> room9Enemies;
+	// apply all to room
+	room9Enemies.push_back(dragon);
+	Room roomNine = Room(9, false, vector<Item>(), room9Enemies);
+
+	// ------------------------------------------------------------ SET UP ROOM 10
+	Room roomTen = Room(10, false, vector<Item>(), vector<GameCharacter>());
+	roomTen.isTrap = true;
+
+	// ------------------------------------------------------------ SET UP ROOM 11
+	// set up items
+	Item coins2 = Item("200 coins", 0, 0, 0);
+	coins2.isCoin = true;
+	coins2.coinWorth = 200;
+	coins2.isLocked = false;
+	Item sword = Item("Dull Sword", 0, 10, 0);
+	sword.isLocked = false;
+	vector<Item> roomElevenItems;
+	roomElevenItems.push_back(coins2);
+	roomElevenItems.push_back(sword);
+	Room roomEleven = Room(11, false, roomElevenItems, vector<GameCharacter>());
+
+	// ------------------------------------------------------------ SET UP WIN ROOM
+	Room roomTwelve = Room(11, true, vector<Item>(), vector<GameCharacter>());
 
 	// PUT PLAYER IN DUNGEON
 	Dungeon dungeon = Dungeon(player);
 
 	// PUT ROOMS IN DUNGEON
-	dungeon.rooms[0] = firstRoom;
-	dungeon.rooms[1] = secondRoom;
-	dungeon.rooms[2] = thirdRoom;
-	dungeon.rooms[3] = fourthRoom;
-	dungeon.rooms[3].isExit = true;
+	dungeon.rooms[0] = entrance;
+	dungeon.rooms[1] = roomOne;
+	dungeon.rooms[2] = roomTwo;
+	dungeon.rooms[3] = roomThree;
+	dungeon.rooms[4] = roomFour;
+	dungeon.rooms[5] = roomFive;
+	dungeon.rooms[6] = roomSix;
+	dungeon.rooms[7] = roomSeven;
+	dungeon.rooms[8] = roomEight;
+	dungeon.rooms[9] = roomNine;
+	dungeon.rooms[10] = roomTen;
+	dungeon.rooms[11] = roomEleven;
+	dungeon.rooms[12] = roomTwelve;
 
 	while (true)
 	{

@@ -9,7 +9,7 @@ class Dungeon
 {
 public:
 	Player player;
-	Room rooms[4];
+	Room rooms[13];
 	Dungeon(Player);
 	int runDungeon(); //determines win or lose (return 0 for lose)
 	void enterRoom(Room*);
