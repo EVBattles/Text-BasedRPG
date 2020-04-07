@@ -1,2 +1,135 @@
 Here I would like to make note of how the background mechanics to the dugeon works. 
 
+While all of the dungeon specifics are handled in Main, the classes and functions are defined in other .h and .cpp files. 
+
+ITEM .H/.CPP 
+General Notes
+Each item in the item class has a name string, health points intager, attack points intager, and defense points intager which are 
+defined in the item initialization. There are four types of items defined by booleans in the item class: coins, locked, potions, and
+and keys. Each set to true defines the item as that subset of item. For coins there is both the isCoin boolean as well as the 
+coinWorth intager which defines how much the coin item is worth. The isLocked boolean is for room chests. This defines the items
+placed in the room item vector as requiring a key to access or not. The isKey boolean defines an item as a key, which will open any
+locked chest. The isPotion boolean defines an item as a potion and potionHealthAddAmount integer defines how much health points a given
+potion will give the player when taken. 
+
+GAMECHARACTER .H/.CPP
+General Notes
+GameCharacter requires Item.h to be included so that each character can have a loot vector of items. Each character is initialized
+with a name string, currentHealth intager, attack points intager, and defense points intager. There are several functions included in
+this class including takeDamage, checkIsDead, and addLoot. 
+takeDamage()
+The takeDamage function takes in an intager amount, declairs a damage intager and sets it equal to amount - character defense. It then
+compairs damage to 0. If it is less than 0, it sets damage to 0 as in taking damage, one cannot regain health points. Once this is done, 
+it sets the currentHealth of the character equal to itself minus damage. The function then returns the damage intager.
+checkIsDead()
+The checkIsDead function is a boolean that passes no variable, but returns the true or false answer to the currentHealth comparison to 
+0. If the currentHealth is less than or equal to 0, the function returns the character's death as true. Otherwise, it returns false.
+addLoot()
+Lastly, the addLoot function is called with an item of the item class. It calls the character's loot vector and pushes the item onto it.
+This function refurs to both NPCs and PCs. 
+
+ROOM .H/.CPP
+General Notes
+Room .h/.cpp requires Item.h and GameCharacter.h to be included. This is because room is declaired with a vector of items and a vector
+of enemies or GameCharacters. A room is declaired with a position or room number intager, a boolean to define a room as an exit, a 
+vector of items, and a vector of GameCharacters. Also included is the isTrap boolean. This defines the room as a trap which will be
+handled later on in the dungeon .h/.cpp. This class also includes the functions clearLoot, clearEnemies, and dropLoot. 
+clearLoot()
+The clearLoot function is used to remove all of the items in the loot vector. To do this, it calls items.clear().
+clearEnemies()
+The clearEnemies function does the same thing but with the enemies vector (enemies.clear()). 
+dropLoot()
+The dropLoot function takes in the GameCharacter pointer to the enemy that has just been defeated. Creating a while loop, it pushes back
+each of the items from the enemy's loot vector to the room vector of items, iterating a counter each time to loop through. Once the
+iterater has reached the size of the enemy loot vector, it breaks out of the while loop. 
+
+PLAYER .H/.CPP
+General Notes
+Player .h/.cpp requires Room.h. Because Room.h contains Item.h and GameCharacter.h, we avoid redundant definitions by only calling 
+Room.h, though we still have access to the other classes. A player is declaired with a name string, a health points intager, an attack 
+points intager, and a defense points intager. The player also has a currentRoom room class object, which is defined in Dungeon.cpp ->
+runDungeon(), typically to the first room of the dungeon, and a previousRoom room class object, which is also defined in Dungeon.cpp ->
+runDungeon(). The player also has an inventory vector of items and an integer coin purse. This class also possesses quite a few
+functions. These include addItem, increaseStats, lootRoom, changeRoom, addCoin, and takeHealthPotion. In Player.cpp, the starting items
+are defined. I chose to give my player a dagger and 20 coins. 
+addCoin()
+In the addCoin function, an inteager is passed in containing the coinWorth and that intager is added to the player's coinPurse.
+addItem()
+The addItem function takes in an item class object and pushes it back into the player's inventory vector and calls increaseStats with 
+the item's stats. 
+lootRoom()
+The lootRoom function takes in the pointer to the player's currentRoom. It begins by checking if the item is a coin or a potion. If it
+is a coin, it prints out the item name and then calls addCoin. IF the item is a potion, it prints out the item name and calls 
+takeHealthPotion, then addItem. If the item is neither a coin or a potion, it prints out the stats of the item and then calls addItem.
+Once this has been done for every item in the room's item vector, it prints out all of the player's updated inventory, coinPurse, 
+and playerStats. 
+takeHealthPotion()
+The takeHealthPotion takes in the pointer to the potion item class object. The function ask the player if they would like to take the
+health potion. If the player says yes, the fuction adds the potionHealthAmount to the player's currentHealth. It then prints the player's
+currentHealth. It then prints the player's currentHealth. It then appends "-used" to the end of the potion name so the player knows
+they have taken the potion they have in their inventory and then sets the potion's isPotion to false and breaks out of the while loop.
+If the player chooses not to take the potion the function just breaks out of the loop. 
+changeRoom()
+For the changeRoom function, it takes in the room the player wishes to move to, set the previous room equal to the current room and the
+current room to the new room the player wishes to move to. 
+
+DUNGEON .H/.CPP
+General Notes
+This file provides much of the actual game functionality and unites the previous files into usable code. Therefore, Dungeon .h/.cpp
+requires the include of Player.h which includes all of the previous .h's necessary for this class. All that is required to initilize
+the dungeon is passing in a player object. Also required is an array of rooms initialized to the total number of rooms. There are 
+quite a few functions: runDungeon, enterRoom, handleEmptyRoom, handleRoomWithChest, handleRoomWithEnemy, handleRoomWithTrap,
+handleLootActions, handleFightActions, handleMovementActions, printActions, performEndGameLogic, printStats, and printHealth. 
+runDungeon()
+The runDungeon is the function that the Main file calls to start the game. It returns 1 for a win and a 0 for a lose. This function
+begins by printing out the welcome message initializing player.currentRoom and player.previousRoom to room 0. In a while loop, the 
+function then calls enterRoom with the player's currentRoom. The function then checks if the player is dead and prints out a game over
+message, calling and returning performEndGameLogic. If they are not dead, the function checks if their current room is set as an exit.
+If it is, it prints out a you win message before calling and returning performEndLogic. If the current room is not an exit, and the 
+player is not dead, handleMovementActions is called with the currentRoom. 
+enterRoom()
+The enterRoom function is called with a pointer to the currentRoom and handles the actions depending on the room type. If the enemies
+vector is not 0, the function calls handleRoomWithEnemy. If room.isTrap is true, it calls handleRoomWithTrap. If the room is not a trap, 
+the function calls handleRoomWithChest. If none of these things are true, the function calls handleEmptyRoom. 
+handleEmptyRoom()
+The handleEmptyRoom function prints out that it is an empty room and prompts the player to move again.
+handleRoomWithChest()
+The handleRoomWithChest function prompts the player to open the chest or move to another room. It then checks if the player has a key. 
+If the player chooses to loot the chest it checks to see if the items are locked. If it isn't it calls handleLootActions. If it is
+locked and the player has a key, it prompts the player if they want to the use the key. If theyh choose yes, the function sets all the 
+items to unlocked, append the key's name with "-used" so that the players know that the key in their inventory has been used and set 
+key.isKey to false. If they choose not to use the key, the function breaks out of the while loop. If the chest is locked and the 
+player does not have a key, the function prints out the need for a key to unlock the chest and then breaks out of the loop. 
+handleRoomWithEnemy()
+The handleRoomWithEnemy function sets the first enemy in the room enemy vector to the GameCharacter enemy define din the beginning of 
+the function. In a while loop, the function prompts the player if they want to attack the enemy or retreat. If they choose attack, the
+function prompts the player if they want to attack the enemy or retreat. If they choose attack, the function calls 
+handleFightActions and returns. If they choose retreat, the function exchanges current room with previous room and calls enterRoom.
+handleRoomWithTrap()
+The handleRoomWithTrap function uses random numbers to determine which trap is sprung and how much damage is done. A random number
+is generated by a rand() given a restriction. 
+handleLootActions()
+The handleLootActions function calls player.lootRoom and then room->clearLoot. 
+handleFightAction()
+The handleFightAction function prompts the player to attack or retreat. If the player chooses to attack, in a while loop, the function
+checks to see if the player has a health potion and if so, offer the player the chance to take it by calling takeHealthPotion. After 
+this, the function handles the player's first attack. By using rand(), this simulates rolling a die to attack. If the number is 
+10 - 20, the enemy takes full damage. If it is 2 - 9, the enemy receives half damage. If it is a 1, the enemy receives no damage. The
+function then cheks to see if the enemy is dead. If it is, it drops the loot in the room by calling dropLoot and then prompting the 
+player to pick up the loot. If they choose to, the function calls lootRoom. After this breaks out of the while loop, the function
+calls clearEnemies and clearLoot. After the player's turn is done, it is the enemy's turn. The enemy's turn goes the same as the player,
+printing out the player's health each time. The function then checks for the player to be dead. If this is true, then the function
+returns. 
+handleMovementActions()
+The handleMovementActions function manages the connections between each room. Depending on the room, the function will present the player
+one to four options. Each selection will move the player to the correct room by calling changeRoom with &room[position number]. 
+printActions()
+The printActions function is passed in the number of actions and the array of actions. This function the presents the player with each
+of the options. 
+performEndGameLogic()
+The performEndGameLogic function presents the player with a replay option. If the player chooses to replay, it returns 1, if not, it 
+returns 0.
+printStats()
+The printStats function prints out the health points, attack points, and defense points of the player. 
+printHealth()
+The printHealth function prints out the health points of the player. 
